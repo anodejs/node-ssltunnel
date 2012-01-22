@@ -1,0 +1,19 @@
+{
+  "author": "Dima Stopel <dima@stopel.org> (http://il.linkedin.com/in/dimastopel)",
+  "name": "ssltunnel",
+  "description": "TCP over SSL tunnel",
+  "version": "0.0.1",
+  "homepage": "https://github.com/dimastopel/ssltunnel",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:dimastopel/ssltunnel.git"
+  },
+  "engines": {
+    "node": "0.6.5"
+  },
+  "licenses": [ { "type": "MIT", "url": "http://www.opensource.org/licenses/mit-license.html" } ],
+  "dependencies": {},
+  "devDependencies": {},
+  "optionalDependencies": {},
+  "main": "lib/ssltunnel.js"
+}
