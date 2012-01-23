@@ -2,7 +2,7 @@ This is a lightweight TCP over SSL / TLS tunnel running over node. If you need t
 
 In order to run this module you will need to download and install nodejs (don't worry, it is small): http://nodejs.org/#download
 
-Additionaly, you will need to create client and server SSL certificates. The easiest way to do so is to use openssl [http://www.openssl.org/]. The steps are the same for both client and server certificates:
+Additionaly, you will need to create client and server SSL certificates. The easiest way to do so is to use openssl [http://www.openssl.org/]. The steps are the same for both client and server certificates. Note that you have test certificates to play with under the testcerts folder. 
 
 
 	dimast@DIMAST-LAPTOP /d/src/mygithub/temp
