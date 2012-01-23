@@ -1,4 +1,4 @@
-This is a light weight TCP over SSL tunnel running over node. If you need to add confidentiality (privacy), integrity, and authenticity to your TCP stream this is a tool for you.
+This is a lightweight TCP over SSL tunnel running over node. If you need to add confidentiality (privacy), integrity, and authenticity to your TCP stream this is a tool for you.
 
 In order to run this module you will need to download and install nodejs (don't worry, it is small): http://nodejs.org/#download
 
