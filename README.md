@@ -40,7 +40,7 @@ Additionaly, you will need to create client and server SSL certificates. The eas
 
 Now you have the key pair for you certificate. You can use it for either client or server component. Please create another pair for the remaining component. PLEASE KEEP YOU PRIVATE KEYS SECURE. 
 
-Now you can run the tunnel. Suppose you have your client component called my_client and server component called my_server. my_server is listening on port 8080. 
+Now you can run the tunnel. Suppose you have your client component called my_client and server component called my_server. my_server is listening on port 8080 and is runnign on machine my_server_host_machine. 
 
 So you run the ssltunnel's client component on the client machine to listen on port 8080. Let's choose port 54443 for our ssltunnel server.
 
