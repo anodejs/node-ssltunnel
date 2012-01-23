@@ -18,7 +18,7 @@
     }
   ],
   "dependencies": {},
-  "devDependencies": {},
+  "devDependencies": {"optimist" : "0.3.1"},
   "optionalDependencies": {},
   "main": "lib/ssltunnel.js"
 }
