@@ -44,12 +44,13 @@ Now you can run the tunnel. Suppose you have your client component called my_cli
 
 So you run the ssltunnel's client component on the client machine to listen on port 8080. Let's choose port 54443 for our ssltunnel server.
 
-> cd bin
-> ssltunnel.cmd -r client -c 54443 -s 8080 --server_public_cert ../testcerts/local_public.pem --client_public_cert ../testcerts/cc_public_test.pem --client_private_cert ../testcerts/cc_private_test.pem
+	> cd bin
+	> ssltunnel.cmd -r client -c 54443 -s 8080 --server_public_cert ../testcerts/local_public.pem --client_public_cert ../testcerts/cc_public_test.pem --client_private_cert ../testcerts/cc_private_test.pem
 
 And you run ssltunnel's server component on the server on port 54443, and configure it to work against my_server on port 8080:
-> cd bin
-> ssltunnel.cmd -r server -s 54443 -c 8080 --server_public_cert ../testcerts/local_public.pem --client_public_cert ../testcerts/cc_public_test.pem --server_private_cert ../testcerts/local_private.pem
+	
+	> cd bin
+	> ssltunnel.cmd -r server -s 54443 -c 8080 --server_public_cert ../testcerts/local_public.pem --client_public_cert ../testcerts/cc_public_test.pem --server_private_cert ../testcerts/local_private.pem
 
 That's it. You can connect with your client to localhost:8080 and ssltunnel will take care on forwarding it to the real server, securely.
 
