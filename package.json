@@ -2,7 +2,7 @@
   "author": "Dima Stopel <dima@stopel.org> (http://il.linkedin.com/in/dimastopel)",
   "name": "ssltunnel",
   "description": "TCP over SSL / TLS tunnel",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "homepage": "https://github.com/dimastopel/ssltunnel",
   "repository": {
     "type": "git",
