@@ -1,25 +1,36 @@
 var ssltunnel = require('./../lib/ssltunnel');
 
 var argv = require('optimist')
+    
     .usage('Usage $0')
-    .demand('c')
-    .alias('c', 'client_port')
-    .describe('c', 'The client port number')
-    .default('h','localhost')
-    .alias('h', 'client_host')
-    .describe('h', 'The client hostname')
-    .demand('s')
-    .alias('s', 'server_port')
-    .describe('s', 'The server port number')
+
     .demand('r')
     .alias('r', 'role')
-    .describe('r', 'The role of the tunnel component, either "client" or "server"')
-    .demand('server_public_cert')
-    .describe('server_public_cert', 'Server public certificate file')
-    .describe('server_public_cert', 'Server private certificate file')
-    .demand('client_public_cert')
-    .describe('client_public_cert', 'Client public certificate file')
-    .describe('client_public_cert', 'Client private certificate file')
+    .describe('r', 'The role of the tunnel component, either \'client\' or \'server\'')
+
+    .demand('p')
+    .alias('p', 'port')
+    .describe('p', 'The port of ssltunnel\'s server')
+
+    .default('h','localhost')
+    .alias('h', 'host')
+    .describe('h', 'The hostname of ssltunnel\'s server')
+
+    .describe('local_port', 'The local port ssltunnel\'s client will listen on')
+    .describe('remote_port', 'The port on the remote machine ssltunnel\'s server will connect to')    
+    .default('remote_host','localhost')
+    .describe('remote_host', 'The hostname of the remote machine ssltunnel\'s server will connect to')    
+    
+    .demand('srv_pub_cert')
+    .describe('srv_pub_cert', 'Public certificate file for ssltunnel\'s server')
+    
+    .describe('srv_prv_cert', 'Private certificate file for ssltunnel\'s server')
+
+    .demand('clt_pub_cert')
+    .describe('clt_pub_cert', 'Public certificate for ssltunnel\'s client')
+    
+    .describe('clt_prv_cert', 'Private certificate for ssltunnel\'s client')
+
     .check(function(argv) {
 
         if (argv.role !== 'client' && argv.role !== 'server')
@@ -28,13 +39,13 @@ var argv = require('optimist')
             return false;
         }
 
-        if (argv.role === 'client' && !argv.client_private_cert)
+        if (argv.role === 'client' && (!argv.clt_prv_cert || !argv.local_port))
         {
             // if this is a client component it must have client private key
             return false;
         }
 
-        if (argv.role === 'server' && !argv.server_private_cert)
+        if (argv.role === 'server' && (!argv.srv_prv_cert || !argv.remote_port))
         {
             // if this is a server component it must have server private key
             return false;
@@ -47,19 +58,26 @@ var argv = require('optimist')
 
 
 var options = {     
-        'client_private_cert' : argv.client_private_cert,
-        'client_public_cert' : argv.client_public_cert,
-        'server_public_cert' : argv.server_public_cert,
-        'client_port' : argv.c,
-        'server_port' : argv.s
+        'client_public_cert' : argv.clt_pub_cert,
+        'server_public_cert' : argv.srv_pub_cert,
     };
 
 if (argv.role === 'client') {
-    options.client_private_cert = argv.client_private_cert;
+
+    options.client_private_cert = argv.clt_prv_cert;
+    options.client_port = argv.port;
+    options.client_host = argv.host;
+    options.server_port = argv.local_port;
+
     ssltunnel.createClient(options);
 }
 else {
-    options.server_private_cert = argv.server_private_cert;
+
+    options.server_private_cert = argv.srv_prv_cert;
+    options.client_port = argv.remote_port;
+    options.client_host = argv.remote_host;
+    options.server_port = argv.port;
+
     ssltunnel.createServer(options);
 }
 
