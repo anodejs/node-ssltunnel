@@ -1,10 +1,27 @@
+## What is ssltunnel?
+
 This is a lightweight TCP over SSL / TLS tunnel running over node. If you need to add confidentiality (privacy), integrity, and authenticity to your TCP stream this is the tool for you.
 
-In order to run this module you will need to download and install nodejs (don't worry, it is small): http://nodejs.org/#download
+## Installation
 
-Additionaly, you will need to create client and server SSL certificates. The easiest way to do so is to use openssl [http://www.openssl.org/]. The steps are the same for both client and server certificates. Note that you have test certificates to play with under the testcerts folder. 
+Please follow the following steps to get it up and running:
 
+1. [Download and install latest node](http://nodejs.org/#download) (don't worry, it is small) (don't worry, it is small)
+2. Enter CMD and run: ```npm install ssltunnel```
+3. The ssltunnel package now resides under ```./node_modules/ssltunnel```
 
+## Creating certificates 
+
+ssltunnel uses client and server certificates for creating proper TLS connection. While server certificate is enough to assure confidentiality and integrity, client certificate is required for assuring authenticity.
+
+Test certificates are provided in the ```testcerts``` folder. You can start playing with sltunnel using them. 
+
+> Please do not use test certificates for production.
+
+You can easily create your certificates using [openssl](http://www.openssl.org/). Each certificate is represented by a key pair. 
+The steps are the same for both client and server certificates. See some example of certificate generation below.
+
+```
 	dimast@DIMAST-LAPTOP /d/src/mygithub/temp
 	$ openssl genrsa -out private.pem 2048
 	Generating RSA private key, 2048 bit long modulus
@@ -36,16 +53,20 @@ Additionaly, you will need to create client and server SSL certificates. The eas
 	dimast@DIMAST-LAPTOP /d/src/mygithub/temp
 	$ ls
 	private.pem  public.pem
+```
+
+> PLEASE KEEP YOUR PRIVATE KEYS SECURE
+
+## Running the ssltunnel
 
 
-Now you have the key pair for you certificate. You can use it for either client or server component. Please create another pair for the remaining component. PLEASE KEEP YOU PRIVATE KEYS SECURE. 
 
 Now you can run the tunnel. Suppose you have your client component called my_client and server component called my_server. my_server is listening on port 8080 and is runnign on machine my_server_host_machine. 
 
 So you run the ssltunnel's client component on the client machine to listen on port 8080. Let's choose port 54443 for our ssltunnel server.
 
 	> cd bin
-	> ssltunnel.cmd -r client -c 54443 -s 8080 --server_public_cert ../testcerts/local_public.pem --client_public_cert ../testcerts/cc_public_test.pem --client_private_cert ../testcerts/cc_private_test.pem
+	> ssltunnel.cmd -r client -c 54443 -h my_server_host_machine -s 8080 --server_public_cert ../testcerts/local_public.pem --client_public_cert ../testcerts/cc_public_test.pem --client_private_cert ../testcerts/cc_private_test.pem
 
 And you run ssltunnel's server component on the server on port 54443, and configure it to work against my_server on port 8080:
 	
