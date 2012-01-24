@@ -59,19 +59,92 @@ The steps are the same for both client and server certificates. See some example
 
 ## Running the ssltunnel
 
+Imagine you have a client-server application. The server is running on ```my_host:8080```. You can route the traffic via ssl tunnel by 
+creating both ssltunnel's server and client:
+
+```
+d:\src\mygithub\ssltunnel\bin>ssltunnel.cmd -r server \
+-p 54443 \
+-h my_ssltunnel_server_host \
+--remote_port 8080 \
+--remote_host my_host \
+--srv_pub_cert ..\testcerts\local_public.pem \
+--clt_pub_cert ..\testcerts\cc_public_test.pem \
+--srv_prv_cert ..\testcerts\local_private.pem 
+
+Running 'server' role. Listening on 54443, decrypting and forwarding to real server machine on my_host:8080.
+```
+
+```
+d:\src\mygithub\ssltunnel\bin>ssltunnel.cmd -r client \
+-p 54443 \
+-h my_ssltunnel_server_host \
+--local_port 54080 \
+--srv_pub_cert ..\testcerts\local_public.pem \
+--clt_pub_cert ..\testcerts\cc_public_test.pem \
+--clt_prv_cert ..\testcerts\cc_private_test.pem
+
+Running 'client' role. Listening on 54080, encrypting and forwarding to ssltunnel's server on my_ssltunnel_server_host:54443.
+```
+
+Now, just point you client to the machine where ssltunnel's client is running (localhost?) port 54808, and ssltunnel will 
+take care of forwarding the data to the server securely.
+
+This is the list of all arguments ssltunnel supports:
+
+```
+d:\src\mygithub\ssltunnel\bin>ssltunnel.cmd
+Usage node d:\src\mygithub\ssltunnel\bin\run_ssltunnel.js
+
+Options:
+  -r, --role      The role of the tunnel component, either 'client' or 'server'          [required]
+  -p, --port      The port of ssltunnel's server                                         [required]
+  -h, --host      The hostname of ssltunnel's server                                     [default: "localhost"]
+  --local_port    The local port ssltunnel's client will listen on
+  --remote_port   The port on the remote machine ssltunnel's server will connect to
+  --remote_host   The hostname of the remote machine ssltunnel's server will connect to  [default: "localhost"]
+  --srv_pub_cert  Public certificate file for ssltunnel's server                         [required]
+  --srv_prv_cert  Private certificate file for ssltunnel's server
+  --clt_pub_cert  Public certificate for ssltunnel's client                              [required]
+  --clt_prv_cert  Private certificate for ssltunnel's client
+```
+
+## API
+
+You can use the library in your node project. The are two exported methods:
+
+```
+ssltunnel.createServer(options)
+ssltunnel.createClient(options)
+```
+
+The options are basically property bag with data similar to what arguments contain. Feel free to see usage example in ```bin/run_ssltunnel.js```
 
 
-Now you can run the tunnel. Suppose you have your client component called my_client and server component called my_server. my_server is listening on port 8080 and is runnign on machine my_server_host_machine. 
+Please see detailed list below:
 
-So you run the ssltunnel's client component on the client machine to listen on port 8080. Let's choose port 54443 for our ssltunnel server.
+```options.client_port``` 
+For createServer() this is a remote machine port
+For createClient() this is a ssltunnel's server port
 
-	> cd bin
-	> ssltunnel.cmd -r client -c 54443 -h my_server_host_machine -s 8080 --server_public_cert ../testcerts/local_public.pem --client_public_cert ../testcerts/cc_public_test.pem --client_private_cert ../testcerts/cc_private_test.pem
+```options.client_host```
+For createServer() this is a remote machine host
+For createClient() this is a ssltunnel's server host
 
-And you run ssltunnel's server component on the server on port 54443, and configure it to work against my_server on port 8080:
-	
-	> cd bin
-	> ssltunnel.cmd -r server -s 54443 -c 8080 --server_public_cert ../testcerts/local_public.pem --client_public_cert ../testcerts/cc_public_test.pem --server_private_cert ../testcerts/local_private.pem
+```options.server_port```
+For createServer() this is a listening port for ssltunnel's server
+For createClient() this is a listening port for ssltunnel's client
 
-That's it. You can connect with your client to localhost:8080 and ssltunnel will take care on forwarding it to the real server, securely.
+```options.server_public_cert```
+Server public certificate. 
 
+```options.server_private_cert```
+Server private certificate. Not needed for createClient().
+
+```options.client_public_cert```
+Client  public certificate. 
+
+```options.client_private_cert```
+Client private certificate. Not needed for createServer().
+
+## Enjoy!
