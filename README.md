@@ -116,7 +116,6 @@ You can use the library in your node project. The are two exported methods:
 ```
 ssltunnel.createServer(options)
 ssltunnel.createClient(options)
-```
 
 The options are basically property bag with data similar to what arguments contain. Feel free to see usage example in ```bin/run_ssltunnel.js```
 
