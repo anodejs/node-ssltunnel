@@ -39,7 +39,7 @@ var argv = require('optimist')
             return false;
         }
 
-        if (argv.role === 'client' && (!argv.clt_prv_cert || !argv.local_port))
+        if (argv.role === 'client' && (!argv.clt_prv_cert || argv.local_port == undefined))
         {
             // if this is a client component it must have client private key
             return false;
@@ -69,7 +69,9 @@ if (argv.role === 'client') {
     options.client_host = argv.host;
     options.server_port = argv.local_port;
 
-    ssltunnel.createClient(options);
+    ssltunnel.createClient(options, function(port) {
+        console.log('Server is listening on port: ' + port);
+    });
 }
 else {
 
@@ -78,6 +80,8 @@ else {
     options.client_host = argv.remote_host;
     options.server_port = argv.port;
 
-    ssltunnel.createServer(options);
+    ssltunnel.createServer(options, function(port) {
+        console.log('Server is listening on port: ' + port);
+    });
 }
 
