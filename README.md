@@ -1,4 +1,4 @@
-[![Build Status](https://secure.travis-ci.org/dimastopel/ssltunnel.png)](http://travis-ci.org/dimastopel/ssltunnel)
+[![Build Status](https://secure.travis-ci.org/anodejs/node-ssltunnel.png?branch=master)](http://travis-ci.org/#!/anodejs/node-ssltunnel)
 
 ## What is ssltunnel?
 
