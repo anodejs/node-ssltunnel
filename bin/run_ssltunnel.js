@@ -21,6 +21,9 @@ var argv = require('optimist')
     .default('remote_host','localhost')
     .describe('remote_host', 'The hostname of the remote machine ssltunnel\'s server will connect to')    
     
+    .alias('q', 'quiet')
+    .describe('q', 'Quiet mode. Only errors are printed')
+
     .demand('srv_pub_cert')
     .describe('srv_pub_cert', 'Public certificate file for ssltunnel\'s server')
     
@@ -61,6 +64,12 @@ var options = {
         'client_public_cert' : argv.clt_pub_cert,
         'server_public_cert' : argv.srv_pub_cert,
     };
+	
+if (argv.q) {
+	options.loglevel = ssltunnel.Log.error;
+} else {
+	options.loglevel = ssltunnel.Log.info;
+}
 
 if (argv.role === 'client') {
 
@@ -69,7 +78,7 @@ if (argv.role === 'client') {
     options.client_host = argv.host;
     options.server_port = argv.local_port;
 
-    ssltunnel.createClient(options, function(port) {
+    ssltunnel.createClient(options, function(err, port) {
         console.log('Server is listening on port: ' + port);
     });
 }
@@ -80,7 +89,7 @@ else {
     options.client_host = argv.remote_host;
     options.server_port = argv.port;
 
-    ssltunnel.createServer(options, function(port) {
+    ssltunnel.createServer(options, function(err, port) {
         console.log('Server is listening on port: ' + port);
     });
 }
