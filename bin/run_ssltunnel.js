@@ -1,96 +1,89 @@
 var ssltunnel = require('./../lib/ssltunnel');
 
 var argv = require('optimist')
-    
-    .usage('Usage $0')
+  
+  .usage('Usage $0')
 
-    .demand('r')
-    .alias('r', 'role')
-    .describe('r', 'The role of the tunnel component, either \'client\' or \'server\'')
+  .demand('r')
+  .alias('r', 'role')
+  .describe('r', 'The role of the tunnel component, either \'client\' or \'server\'')
 
-    .demand('p')
-    .alias('p', 'port')
-    .describe('p', 'The port of ssltunnel\'s server')
+  .demand('proxy_port')
+  .describe('proxy_port', 'The proxy listener\'s port')
 
-    .default('h','localhost')
-    .alias('h', 'host')
-    .describe('h', 'The hostname of ssltunnel\'s server')
+  .default('server_host','localhost')
+  .describe('server_host', 'The server\'s hostname. Either ssltunnel\'s server role or back-end server')
 
-    .describe('local_port', 'The local port ssltunnel\'s client will listen on')
-    .describe('remote_port', 'The port on the remote machine ssltunnel\'s server will connect to')    
-    .default('remote_host','localhost')
-    .describe('remote_host', 'The hostname of the remote machine ssltunnel\'s server will connect to')    
-    
-    .alias('q', 'quiet')
-    .describe('q', 'Quiet mode. Only errors are printed')
+  .demand('server_port')
+  .describe('server_port', 'The server\'s port. Either ssltunnel\'s server role or back-end server')
 
-    .demand('srv_pub_cert')
-    .describe('srv_pub_cert', 'Public certificate file for ssltunnel\'s server')
-    
-    .describe('srv_prv_cert', 'Private certificate file for ssltunnel\'s server')
+  .default('loglevel','log')
+  .describe('loglevel', 'SSLTunnel logging level. One of: \'error\', \'warn\', \'info\', or \'log\'')
 
-    .demand('clt_pub_cert')
-    .describe('clt_pub_cert', 'Public certificate for ssltunnel\'s client')
-    
-    .describe('clt_prv_cert', 'Private certificate for ssltunnel\'s client')
+  .default('keepalive','30000')
+  .describe('keepalive', 'Use TCP keep-alive when connecting to an sslserver. Provide keep-alive delay in ms. Use negative value for turning keep-alive off. Relevant for client role only.')
 
-    .check(function(argv) {
+  .demand('srv_pub_cert')
+  .describe('srv_pub_cert', 'Public certificate file for ssltunnel\'s server')
+  
+  .describe('srv_prv_cert', 'Private certificate file for ssltunnel\'s server')
 
-        if (argv.role !== 'client' && argv.role !== 'server')
-        {
-            // the component must be either "client" or "server"
-            return false;
-        }
+  .demand('clt_pub_cert')
+  .describe('clt_pub_cert', 'Public certificate for ssltunnel\'s client')
+  
+  .describe('clt_prv_cert', 'Private certificate for ssltunnel\'s client')
 
-        if (argv.role === 'client' && (!argv.clt_prv_cert || argv.local_port == undefined))
-        {
-            // if this is a client component it must have client private key
-            return false;
-        }
+  .check(function(argv) {
 
-        if (argv.role === 'server' && (!argv.srv_prv_cert || !argv.remote_port))
-        {
-            // if this is a server component it must have server private key
-            return false;
-        }
+    if (argv.role !== 'client' && argv.role !== 'server')
+    {
+      // the component must be either "client" or "server"
+      return false;
+    }
 
-        return true;
+    if (argv.role === 'client' && (!argv.clt_prv_cert || argv.proxy_port == undefined))
+    {
+      // if this is a client component it must have client private key
+      return false;
+    }
 
-    })
-    .argv;
+    if (argv.role === 'server' && (!argv.srv_prv_cert || argv.proxy_port == undefined))
+    {
+      // if this is a server component it must have server private key
+      return false;
+    }
+
+    return true;
+
+  })
+  .argv;
 
 
 var options = {     
-        'client_public_cert' : argv.clt_pub_cert,
-        'server_public_cert' : argv.srv_pub_cert,
-    };
-	
-if (argv.q) {
-	options.loglevel = ssltunnel.Log.error;
-} else {
-	options.loglevel = ssltunnel.Log.info;
-}
+    'client_public_cert' : argv.clt_pub_cert,
+    'server_public_cert' : argv.srv_pub_cert,
+    'loglevel' : argv.loglevel,
+    'proxy_port' : argv.proxy_port,
+    'server_host' : argv.server_host,
+    'server_port' : argv.server_port
+  };
+
 
 if (argv.role === 'client') {
 
-    options.client_private_cert = argv.clt_prv_cert;
-    options.client_port = argv.port;
-    options.client_host = argv.host;
-    options.server_port = argv.local_port;
+  options.client_private_cert = argv.clt_prv_cert;
+  options.keep_alive = argv.keepalive;
 
-    ssltunnel.createClient(options, function(err, port) {
-        console.log('Server is listening on port: ' + port);
-    });
+  ssltunnel.createClient(options, function(err, port) {
+    console.log('ssltunnel\'s client is listening on port: ' + port);
+  });
 }
 else {
 
-    options.server_private_cert = argv.srv_prv_cert;
-    options.client_port = argv.remote_port;
-    options.client_host = argv.remote_host;
-    options.server_port = argv.port;
+  options.server_private_cert = argv.srv_prv_cert;
 
-    ssltunnel.createServer(options, function(err, port) {
-        console.log('Server is listening on port: ' + port);
-    });
+  ssltunnel.createServer(options, function(err, port) {
+    console.log('ssltunnel\'s server is listening on port: ' + port);
+  });
 }
 
