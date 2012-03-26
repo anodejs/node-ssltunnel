@@ -17,11 +17,11 @@ var argv = require('optimist')
   .demand('server_port')
   .describe('server_port', 'The server\'s port. Either ssltunnel\'s server role or back-end server')
 
-  .default('loglevel','log')
-  .describe('loglevel', 'SSLTunnel logging level. One of: \'error\', \'warn\', \'info\', or \'log\'')
+  .default('log_level','log')
+  .describe('log_level', 'SSLTunnel logging level. One of: \'error\', \'warn\', \'info\', or \'log\'')
 
-  .default('keepalive','30000')
-  .describe('keepalive', 'Use TCP keep-alive when connecting to an sslserver. Provide keep-alive delay in ms. Use negative value for turning keep-alive off. Relevant for client role only.')
+  .default('keep_alive','30000')
+  .describe('keep_alive', 'Use TCP keep-alive when connecting to an sslserver. Provide keep-alive delay in ms. Use negative value for turning keep-alive off. Relevant for client role only.')
 
   .demand('srv_pub_cert')
   .describe('srv_pub_cert', 'Public certificate file for ssltunnel\'s server')
@@ -62,7 +62,7 @@ var argv = require('optimist')
 var options = {     
     'client_public_cert' : argv.clt_pub_cert,
     'server_public_cert' : argv.srv_pub_cert,
-    'loglevel' : argv.loglevel,
+    'log_level' : argv.log_level,
     'proxy_port' : argv.proxy_port,
     'server_host' : argv.server_host,
     'server_port' : argv.server_port
@@ -72,7 +72,7 @@ var options = {
 if (argv.role === 'client') {
 
   options.client_private_cert = argv.clt_prv_cert;
-  options.keep_alive = argv.keepalive;
+  options.keep_alive = argv.keep_alive;
 
   ssltunnel.createClient(options, function(err, port) {
     console.log('ssltunnel\'s client is listening on port: ' + port);
