@@ -58,7 +58,6 @@ var argv = require('optimist')
   })
   .argv;
 
-
 var options = {     
     'client_public_cert' : argv.clt_pub_cert,
     'server_public_cert' : argv.srv_pub_cert,

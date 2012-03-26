@@ -2,7 +2,7 @@
   "author": "Dima Stopel <dima@stopel.org> (http://il.linkedin.com/in/dimastopel)",
   "name": "ssltunnel",
   "description": "TCP over SSL / TLS tunnel",
-  "version": "0.1.6",
+  "version": "0.2.2",
   "homepage": "https://github.com/anodejs/node-ssltunnel",
   "repository": {
     "type": "git",
