@@ -24,37 +24,37 @@ You can easily create your certificates using [openssl](http://www.openssl.org/)
 The steps are the same for both client and server certificates. See some example of certificate generation below.
 
 ```
-	dimast@DIMAST-LAPTOP /d/src/mygithub/temp
-	$ openssl genrsa -out private.pem 2048
-	Generating RSA private key, 2048 bit long modulus
-	...+++
-	............+++
-	e is 65537 (0x10001)
+  dimast@DIMAST-LAPTOP /d/src/mygithub/temp
+  $ openssl genrsa -out private.pem 2048
+  Generating RSA private key, 2048 bit long modulus
+  ...+++
+  ............+++
+  e is 65537 (0x10001)
 
-	dimast@DIMAST-LAPTOP /d/src/mygithub/temp
-	$ ls
-	private.pem
+  dimast@DIMAST-LAPTOP /d/src/mygithub/temp
+  $ ls
+  private.pem
 
-	dimast@DIMAST-LAPTOP /d/src/mygithub/temp
-	$ openssl req -new -x509 -key private.pem -out public.pem -days 365
-	You are about to be asked to enter information that will be incorporated
-	into your certificate request.
-	What you are about to enter is what is called a Distinguished Name or a DN.
-	There are quite a few fields but you can leave some blank
-	For some fields there will be a default value,
-	If you enter '.', the field will be left blank.
-	-----
-	Country Name (2 letter code) [AU]:IL
-	State or Province Name (full name) [Some-State]:
-	Locality Name (eg, city) []:
-	Organization Name (eg, company) [Internet Widgits Pty Ltd]:
-	Organizational Unit Name (eg, section) []:
-	Common Name (eg, YOUR name) []:my_server
-	Email Address []:
+  dimast@DIMAST-LAPTOP /d/src/mygithub/temp
+  $ openssl req -new -x509 -key private.pem -out public.pem -days 365
+  You are about to be asked to enter information that will be incorporated
+  into your certificate request.
+  What you are about to enter is what is called a Distinguished Name or a DN.
+  There are quite a few fields but you can leave some blank
+  For some fields there will be a default value,
+  If you enter '.', the field will be left blank.
+  -----
+  Country Name (2 letter code) [AU]:IL
+  State or Province Name (full name) [Some-State]:
+  Locality Name (eg, city) []:
+  Organization Name (eg, company) [Internet Widgits Pty Ltd]:
+  Organizational Unit Name (eg, section) []:
+  Common Name (eg, YOUR name) []:my_server
+  Email Address []:
 
-	dimast@DIMAST-LAPTOP /d/src/mygithub/temp
-	$ ls
-	private.pem  public.pem
+  dimast@DIMAST-LAPTOP /d/src/mygithub/temp
+  $ ls
+  private.pem  public.pem
 ```
 
 > PLEASE KEEP YOUR PRIVATE KEYS SECURE
