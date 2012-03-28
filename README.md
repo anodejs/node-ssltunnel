@@ -65,28 +65,28 @@ Imagine you have a client-server application. The server is running on ```my_hos
 creating both ssltunnel's server and client:
 
 ```
-d:\src\mygithub\ssltunnel\bin>ssltunnel.cmd -r server \
--p 54443 \
--h my_ssltunnel_server_host \
---remote_port 8080 \
---remote_host my_host \
---srv_pub_cert ..\testcerts\local_public.pem \
---clt_pub_cert ..\testcerts\cc_public_test.pem \
---srv_prv_cert ..\testcerts\local_private.pem 
+d:\src\ssltunnel\bin>ssltunnel.cmd -r server \
+--proxy_port 54443 \
+--server_port 8080 \
+--server_host my_host \
+--srv_pub_cert ..\testcerts\sc_public.pem \
+--clt_pub_cert ..\testcerts\cc_public.pem \
+--srv_prv_cert ..\testcerts\sc_private.pem \
 
-Running 'server' role. Listening on 54443, decrypting and forwarding to real server machine on my_host:8080.
+Running 'server' role. Listening on 54443, decrypting and forwarding to real server machine on my_host:8080
 ```
 
 ```
-d:\src\mygithub\ssltunnel\bin>ssltunnel.cmd -r client \
--p 54443 \
--h my_ssltunnel_server_host \
---local_port 54080 \
---srv_pub_cert ..\testcerts\local_public.pem \
---clt_pub_cert ..\testcerts\cc_public_test.pem \
---clt_prv_cert ..\testcerts\cc_private_test.pem
+d:\src\ssltunnel\bin>ssltunnel.cmd -r client \
+--proxy_port 54080 \
+--server_port 54443 \
+--server_host my_ssltunnel_server_host \
+--srv_pub_cert ..\testcerts\sc_public.pem \
+--clt_pub_cert ..\testcerts\cc_public.pem \
+--clt_prv_cert ..\testcerts\cc_private.pem \
 
-Running 'client' role. Listening on 54080, encrypting and forwarding to ssltunnel's server on my_ssltunnel_server_host:54443.
+
+Running 'client' role. Listening on 54080, encrypting and forwarding to ssltunnel's server on my_ssltunnel_server_host:54443
 ```
 
 Now, just point you client to the machine where ssltunnel's client is running (localhost?) port 54808, and ssltunnel will 
@@ -95,20 +95,26 @@ take care of forwarding the data to the server securely.
 This is the list of all arguments ssltunnel supports:
 
 ```
-d:\src\mygithub\ssltunnel\bin>ssltunnel.cmd
-Usage node d:\src\mygithub\ssltunnel\bin\run_ssltunnel.js
+d:\src\ssltunnel\bin>ssltunnel
+Usage node d:\src\ssltunnel\bin\run_ssltunnel.js
 
 Options:
-  -r, --role      The role of the tunnel component, either 'client' or 'server'          [required]
-  -p, --port      The port of ssltunnel's server                                         [required]
-  -h, --host      The hostname of ssltunnel's server                                     [default: "localhost"]
-  --local_port    The local port ssltunnel's client will listen on
-  --remote_port   The port on the remote machine ssltunnel's server will connect to
-  --remote_host   The hostname of the remote machine ssltunnel's server will connect to  [default: "localhost"]
-  --srv_pub_cert  Public certificate file for ssltunnel's server                         [required]
+  -r, --role      The role of the tunnel component, either 'client' or 'server'              [required]
+  --proxy_port    The proxy listener's port                                                  [required]
+  --server_host   The server's hostname. Either ssltunnel's server role or back-end server   [default: "localhost"]
+  --server_port   The server's port. Either ssltunnel's server role or back-end server       [required]
+  --log_level     SSLTunnel logging level. One of: 'error', 'warn', 'info', or 'log'         [default: "log"]
+  --keep_alive    Use TCP keep-alive when connecting to an sslserver. 
+                  Provide keep-alive delay in ms. Use negative value for
+                  turning keep-alive off. Relevant for client role only.                     [default: "30000"]
+  --srv_pub_cert  Public certificate file for ssltunnel's server                             [required]
   --srv_prv_cert  Private certificate file for ssltunnel's server
-  --clt_pub_cert  Public certificate for ssltunnel's client                              [required]
+  --clt_pub_cert  Public certificate for ssltunnel's client                                  [required]
   --clt_prv_cert  Private certificate for ssltunnel's client
+
+
+Missing required arguments: r, proxy_port, server_port, srv_pub_cert, clt_pub_cert
+
 ```
 
 ## API
