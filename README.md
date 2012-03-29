@@ -144,16 +144,14 @@ See [run_ssltunnel.js](https://github.com/anodejs/node-ssltunnel/blob/master/bin
 
 The full list is below:
 
-'proxy_port'          : the listening proxy port. Receives cleartext for *client* role and ciphertext for *server* role.
-'server_port'         : the port of the server to forward the data to. 
-'server_host'         : the host name of the server to forward the data to.
-
-'client_public_cert'  : client's role public certificate. 
-'server_public_cert'  : client's role private certificate. 
-'client_private_cert' : servers's role public certificate. 
-'server_private_cert' : servers's role public certificate. 
-
-'log_level'           : One of: 'error', 'warn', 'info', or 'log'.
-'keep_alive'          : Whether to use TCP keep alive when connecting to *server* role. This setting is relevant to *client* role only.
+* _proxy_port_          : the listening proxy port. Receives cleartext for *client* role and ciphertext for *server* role.
+* 'server_port'         : the port of the server to forward the data to. 
+* 'server_host'         : the host name of the server to forward the data to.
+* 'client_public_cert'  : client's role public certificate. 
+* 'server_public_cert'  : client's role private certificate. 
+* 'client_private_cert' : servers's role public certificate. 
+* 'server_private_cert' : servers's role public certificate. 
+* 'log_level'           : One of: 'error', 'warn', 'info', or 'log'.
+* 'keep_alive'          : Whether to use TCP keep alive when connecting to *server* role. This setting is relevant to *client* role only.
 
 ## Enjoy!
