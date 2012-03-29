@@ -57,8 +57,16 @@ Now we will create sslserver. Note that you need server certificate with private
 
 So we instruct the sslserver (*-r server*) to listen on port *50443* and connect to back end server on host *localhost* (the default, actually) and port *50080*. We also provide public and private server certificates and public client certificate which are stored in decrypted pem files. 
 
-`c:\node_modules\ssltunnel\bin>ssltunnel.cmd -r server --proxy_port 50443 --server_port 50080 --server-host localhost --srv_pub_cert ..
-\testcerts\sc_public.pem --srv_prv_cert ..\testcerts\sc_private.pem --clt_pub_cert ..\testcerts\cc_public.pem`
+```
+c:\node_modules\ssltunnel\bin>ssltunnel.cmd 
+	-r server 
+	--proxy_port 50443 
+	--server_port 50080 
+	--server-host localhost 
+	--srv_pub_cert ..\testcerts\sc_public.pem 
+	--srv_prv_cert ..\testcerts\sc_private.pem 
+	--clt_pub_cert ..\testcerts\cc_public.pem
+```
 
 This is the output you should get:
 
@@ -71,7 +79,16 @@ Now let's fire the client:
 
 Here we instruct the sslproxy (*-r client*) to listen on port *50081* and connect to sslserver on host *localhost* (also the default) and port *50443*. We also provide public and private client certificates and sslserver's public certificate. 
 
-`c:\node_modules\ssltunnel\bin>ssltunnel.cmd -r client --proxy_port 50081 --server_port 50443 --server-host --srv_pub_cert ..\testcerts\sc_public.pem --clt_pub_cert ..\testcerts\cc_public.pem --clt_prv_cert ..\testcerts\cc_private.pem`
+```
+c:\node_modules\ssltunnel\bin>ssltunnel.cmd 
+	-r client 
+	--proxy_port 50081 
+	--server_port 50443 
+	--server-host 
+	--srv_pub_cert ..\testcerts\sc_public.pem 
+	--clt_pub_cert ..\testcerts\cc_public.pem 
+	--clt_prv_cert ..\testcerts\cc_private.pem
+```
 
 You should see something like this:
 
