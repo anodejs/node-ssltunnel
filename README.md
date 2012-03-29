@@ -123,35 +123,37 @@ You can use the library in your node project. The are two exported methods:
 
 ```
 var ssltunnel = require('ssltunnel');
-ssltunnel.createServer(options)
-ssltunnel.createClient(options)
+
+var options = {
+  
+    'proxy_port' : 8080,
+    'server_host' : my_host,
+    'server_port' : 54443,
+    //...
+}
+
+ssltunnel.createServer(options);
+
+// or
+
+ssltunnel.createClient(options);
 ```
 
-The options are basically property bag with data similar to what arguments contain. Feel free to see usage example in ```bin/run_ssltunnel.js```
+The options are basically property bag with data similar to what arguments contain. 
+See [run_ssltunnel.js](https://github.com/anodejs/node-ssltunnel/blob/master/bin/run_ssltunnel.js) for usage example.
 
-Please see detailed list below:
+The full list is below:
 
-* options.client_port:
-For createServer() this is a remote machine port.
-For createClient() this is a ssltunnel's server port.
+'proxy_port'          : the listening proxy port. Receives cleartext for *client* role and ciphertext for *server* role.
+'server_port'         : the port of the server to forward the data to. 
+'server_host'         : the host name of the server to forward the data to.
 
-* options.client_host: 
-For createServer() this is a remote machine host.
-For createClient() this is a ssltunnel's server host.
+'client_public_cert'  : client's role public certificate. 
+'server_public_cert'  : client's role private certificate. 
+'client_private_cert' : servers's role public certificate. 
+'server_private_cert' : servers's role public certificate. 
 
-* options.server_port:
-For createServer() this is a listening port for ssltunnel's server.
-For createClient() this is a listening port for ssltunnel's client.
-
-* options.server_public_cert: Server public certificate. 
-
-* options.server_private_cert:
-Server private certificate. Not needed for createClient().
-
-* options.client_public_cert:
-Client  public certificate. 
-
-* options.client_private_cert:
-Client private certificate. Not needed for createServer().
+'log_level'           : One of: 'error', 'warn', 'info', or 'log'.
+'keep_alive'          : Whether to use TCP keep alive when connecting to *server* role. This setting is relevant to *client* role only.
 
 ## Enjoy!
