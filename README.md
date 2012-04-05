@@ -8,7 +8,7 @@ This is a lightweight TCP over SSL / TLS tunnel running over node. If you need t
 
 Please follow the following steps to get it up and running:
 
-1. [Download and install latest node](http://nodejs.org/#download) (don't worry, it is small) (don't worry, it is small)
+1. [Download and install latest node](http://nodejs.org/#download) (don't worry, it is small)
 2. Enter CMD and run: ```npm install ssltunnel```
 3. The ssltunnel package now resides under ```./node_modules/ssltunnel```
 
